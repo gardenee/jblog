@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blog">
+	<insert id="insertBlog" parameterType="UserVo">
+		<![CDATA[
+			INSERT INTO blog
+			VALUES (#{id}, #{blogTitle}, #{logoFile})
+		]]>
+	</insert>
+	
+	
+	<select id="selectBlog" parameterType="String" resultType="BlogVo">
+		<![CDATA[
+			SELECT b.id id
+			       ,u.user_name name
+			       ,b.blog_title blogTitle
+			       ,b.logo_file logoFile
+			FROM   blog b, users u
+			WHERE  b.id = #{id}
+			AND    b.id = u.id
+		]]>
+	</select>
+	
+	
+	<update id="updateBasic" parameterType="BlogVo">
+		<![CDATA[
+			UPDATE blog
+			SET    blog_title = #{blogTitle}
+			       ,logo_file = #{logoFile}
+			WHERE  id = #{id}
+		]]>
+	</update>
+</mapper>

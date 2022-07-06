@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+	<configuration>
+		<typeAliases>
+			<typeAlias alias="UserVo" type="com.jblog.vo.UserVo" />
+			<typeAlias alias="BlogVo" type="com.jblog.vo.BlogVo" />
+		</typeAliases>
+
+		<mappers>
+			<mapper resource="mybatis/mappers/user.xml" />
+			<mapper resource="mybatis/mappers/blog.xml" />
+		</mappers>
+	</configuration>
