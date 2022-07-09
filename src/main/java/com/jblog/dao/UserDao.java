@@ -13,30 +13,22 @@ public class UserDao {
 	private SqlSession sqlSession;
 	
 	public int insertUser(UserVo user) {
-		int count = -1;
-		count = sqlSession.insert("user.insertUser", user);
-		
-		return count;
+		return sqlSession.insert("user.insertUser", user);
 	}
 	
 	
 	public int IDcheck(String check) {
-		int count = sqlSession.selectOne("user.IDcheck", check);
-		
-		return count;
+		return sqlSession.selectOne("user.IDcheck", check);
 	}
 	
 	
 	public int loginCheck(UserVo login) {
-		int count = sqlSession.selectOne("user.loginCheck", login);
-		
-		return count;
+		return sqlSession.selectOne("user.loginCheck", login);
 	}
 	
 	
 	public UserVo selectAuthUser(UserVo login) {
-		UserVo authUser = sqlSession.selectOne("user.selectAuthUser", login);
-		
-		return authUser;
+		return sqlSession.selectOne("user.selectAuthUser", login);
 	}
+	
 }

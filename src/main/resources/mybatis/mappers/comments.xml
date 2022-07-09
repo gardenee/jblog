@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="comments">
+
+	<select id="selectComment" parameterType="int" resultType="CommVo">
+		<![CDATA[
+			SELECT u.user_name userName
+			       ,u.user_no userNo
+			       ,u.id id
+			       ,c.cmt_content cmtContent
+			       ,c.cmt_no cmtNo
+			       ,TO_CHAR(c.reg_date, 'YYYY/MM/DD') regDate
+			FROM   comments c, users u
+			WHERE  c.user_no = u.user_no
+			AND    c.post_no = #{postNo}
+			ORDER BY c.cmt_no ASC
+		]]>
+	</select>
+	
+	
+	<select id="selectRecent" parameterType="int" resultType="CommVo">
+		<![CDATA[
+			SELECT u.user_name userName
+			       ,u.user_no userNo
+			       ,u.id id
+			       ,c.cmt_content cmtContent
+			       ,c.cmt_no cmtNo
+			       ,TO_CHAR(c.reg_date, 'YYYY/MM/DD') regDate
+			FROM   comments c, users u
+			WHERE  c.user_no = u.user_no
+			AND    c.cmt_no = #{cmtNo}
+		]]>
+	</select>
+	
+	
+	<insert id="insertComment" parameterType="CommVo">
+		<selectKey keyProperty="cmtNo" resultType="int" order="BEFORE">
+			SELECT seq_comments_no.nextval 
+			FROM   dual
+		</selectKey>
+		
+		<![CDATA[
+			INSERT INTO comments
+			VALUES (#{cmtNo}, #{postNo}, #{userNo}, #{cmtContent}, SYSDATE)
+		]]>
+	</insert>
+	
+	
+	<delete id="deleteComment" parameterType="int">
+		<![CDATA[
+			DELETE comments
+			WHERE  cmt_no = #{cmtNo}
+		]]>
+	</delete>
+</mapper>

@@ -31,4 +31,46 @@
 			WHERE  id = #{id}
 		]]>
 	</update>
+	
+	
+	<select id="selectByTitle" parameterType="String" resultType="BlogVo">
+		<![CDATA[
+			SELECT b.id
+			       ,u.user_name name
+			       ,b.blog_title blogTitle
+			       ,b.logo_file logoFile
+			       ,NVL(ref.regDate, '01/01/01') regDate
+			FROM   users u, blog b, (SELECT id, max(regDate) regDate
+			                         FROM   (SELECT c.id id, TO_CHAR(p.reg_date, 'YYYY/MM/DD') regDate
+			                                 FROM   category c, post p
+			                                 WHERE  c.cate_no = p.cate_no(+))
+			                         GROUP BY id) ref
+		    WHERE  b.id = ref.id
+		    AND    b.id = u.id
+		    AND    b.blog_title LIKE '%'||#{keyword}||'%'
+		    ORDER BY regDate DESC
+		             ,u.user_no DESC
+		]]>
+	</select>
+	
+	
+	<select id="selectByName" parameterType="String" resultType="BlogVo">
+		<![CDATA[
+			SELECT b.id
+			       ,u.user_name name
+			       ,b.blog_title blogTitle
+			       ,b.logo_file logoFile
+			       ,NVL(ref.regDate, '01/01/01') regDate
+			FROM   users u, blog b, (SELECT id, max(regDate) regDate
+			                         FROM   (SELECT c.id id, TO_CHAR(p.reg_date, 'YYYY/MM/DD') regDate
+			                                 FROM   category c, post p
+			                                 WHERE  c.cate_no = p.cate_no(+))
+			                         GROUP BY id) ref
+		    WHERE  b.id = ref.id
+		    AND    b.id = u.id
+		    AND    u.user_name LIKE '%'||#{keyword}||'%'
+		    ORDER BY regDate DESC
+		             ,u.user_no DESC
+		]]>
+	</select>
 </mapper>

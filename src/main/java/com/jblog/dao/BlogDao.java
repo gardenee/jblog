@@ -13,24 +13,16 @@ public class BlogDao {
 	private SqlSession sqlSession;
 	
 	public BlogVo selectBlog(String id) {
-		BlogVo bVo = sqlSession.selectOne("blog.selectBlog", id);
-		
-		return bVo;
+		return sqlSession.selectOne("blog.selectBlog", id);
 	}
 	
 	
 	public int insertBlog(BlogVo newBlog) {
-		int count = -1;
-		count = sqlSession.insert("blog.insertBlog", newBlog);
-		
-		return count;
+		return sqlSession.insert("blog.insertBlog", newBlog);
 	}
 	
 	
 	public int updateBasic(BlogVo bVo) {
-		int count = -1;
-		count = sqlSession.update("blog.updateBasic", bVo);
-		
-		return count;
+		return sqlSession.update("blog.updateBasic", bVo);
 	}
 }

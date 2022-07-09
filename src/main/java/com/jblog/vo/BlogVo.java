@@ -6,6 +6,7 @@ public class BlogVo {
 	private String name;
 	private String blogTitle;
 	private String logoFile;
+	private String regDate;
 	
 	public BlogVo() {
 		
@@ -47,6 +48,14 @@ public class BlogVo {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
 	}
 
 	@Override

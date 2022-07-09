@@ -8,7 +8,9 @@
 <meta charset="UTF-8">
 <title>JBlog</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
+
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
+
 </head>
 
 <body>
@@ -30,80 +32,131 @@
 					<div class="text-left">
 						<strong>카테고리</strong>
 					</div>
+					
+					<form id="cateForm" action="${pageContext.request.contextPath}/blog/${bVo.id}" method="POST">
+						<input id="cateNo" type="hidden" name="cateNo" value="">
+					</form>
+					
 					<ul id="cateList" class="text-left">
-						<li><a href="$}">카테고리5</a></li>
-						<li><a href="$}">카테고리4</a></li>
-						<li><a href="$}">카테고리3</a></li>
-						<li><a href="$}">카테고리2</a></li>
-						<li><a href="$}">카테고리1</a></li>
-						<li><a href="$}">미분류</a></li>
-						
+						<c:forEach items="${cList}" var="cate">
+							<li><a class="cate-a" data-cateNo="${cate.cateNo}">${cate.cateName} (${cate.postNum})</a></li>
+						</c:forEach>			
 					</ul>
 				</div>
 			</div>
+			
 			<!-- profilecate_area -->
-			
-			<div id="post_area">
+			<div id="post_area">				
+				<c:if test="${!empty(post)}">
+					<div id="postBox" class="clearfix">
+							<div id="postTitle" class="text-left" data-postNo="${post.postNo}"><strong>${post.postTitle}</strong></div>
+							<div id="postDate" class="text-left"><strong>${post.regDate}</strong></div>
+							<div id="postNick">${post.userName}(${post.id})님</div>
+					</div>
+					<!-- //postBox -->
 				
-				<div id="postBox" class="clearfix">
-						<div id="postTitle" class="text-left"><strong>08.페이징</strong></div>
-						<div id="postDate" class="text-left"><strong>2020/07/23</strong></div>
-						<div id="postNick">정우성(hijava)님</div>
-				</div>
-				<!-- //postBox -->
-			
-				<div id="post" >
-					대통령은 법률이 정하는 바에 의하여 사면·감형 또는 복권을 명할 수 있다. 
-					대통령의 임기는 5년으로 하며, 중임할 수 없다. 법관은 탄핵 또는 금고 이상의 
-					형의 선고에 의하지 아니하고는 파면되지 아니하며, 징계처분에 의하지 아니하고는 
-					정직·감봉 기타 불리한 처분을 받지 아니한다.
-				</div>
+					<div id="post" >
+						${post.postContent}
+					</div>
+					
+					<!--  comments area  -->
+						<div id="comments_area">
+							<!--  코멘트 작성  -->
+							<c:if test="${!empty(authUser)}">
+								<table id="write-comments" border="1">
+									<colgroup>
+										<col style="width: 100px">
+										<col style="width: 500px">
+										<col style="width: 100px">
+									</colgroup>
+									<tr>
+										<td><a id="userName" data-no="${authUser.userNo}">${authUser.userName}</a></td>
+										<td><input name="cmtContent" type="text" value=""></td>
+										<td><button id="btn-addcmt" type="button">저장</button></td>
+									</tr>
+								</table>
+							</c:if>
+							<!--  // 코멘트 작성  -->
+							
+							<!--  코멘트 읽기 -->
+							<table id="read-comments" border="1">
+								<colgroup>
+									<col style="width: 100px">
+									<col style="width: 450px">
+									<col style="width: 100px">
+									<col style="width: 50px">
+								</colgroup>
+							</table>
+							<!--  //코멘트 읽기 -->
+						</div>
+					<!--  ///comments area -->
+					
+					
+				</c:if>
 				<!-- //post -->
 				
 				<!-- 글이 없는 경우 -->
-				<!-- 
-				<div id="postBox" class="clearfix">
-							<div id="postTitle" class="text-left"><strong>등록된 글이 없습니다.</strong></div>
-							<div id="postDate" class="text-left"><strong></strong></div>
-							<div id="postNick"></div>
-				</div>
-			    
-				<div id="post" >
-				</div>
-				-->
+				<c:if test="${empty(post)}">
+					<div id="postBox" class="clearfix">
+								<div id="postTitle" class="text-left"><strong>등록된 글이 없습니다.</strong></div>
+								<div id="postDate" class="text-left"><strong></strong></div>
+								<div id="postNick"></div>
+					</div>
+				    
+					<div id="post" >
+					</div>
+				</c:if>
 				
-				<div id="list">
-					<div id="listTitle" class="text-left"><strong>카테고리의 글</strong></div>
-					<table>
-						<colgroup>
-							<col style="">
-							<col style="width: 20%;">
-						</colgroup>
+				<c:if test="${!empty(post)}">
+					<div id="list">
+						<div id="listTitle" class="text-left"><strong>${cateName}의 글</strong></div>
 						
-						<tr>
-							<td class="text-left"><a href="">08.페이징</a></td>
-							<td class="text-right">2020/07/23</td>
-						</tr>
-						<tr>
-							<td class="text-left"><a href="">07.첨부파일_MultipartResolver</a></td>
-							<td class="text-right">2020/07/23</td>
-						</tr>
-						<tr>
-							<td class="text-left"><a href="">06.jquery_ajax</a></td>
-							<td class="text-right">2020/07/23</td>
-						</tr>
-						<tr>
-							<td class="text-left"><a href="">05.javaScript</a></td>
-							<td class="text-right">2020/07/23</td>
-						</tr>
-						<tr>
-							<td class="text-left"><a href="">04.spring_어플리케이션_아키텍쳐</a></td>
-							<td class="text-right">2020/07/23</td>
-						</tr>
+						<form id="postForm" action="" method="POST">
+								<input id="post-cateNo" type="hidden" name="cateNo" value="${post.cateNo}">
+								<input id="pageNo" type="hidden" name="pageNo" value="${paging.currPage}">								
+						</form>
 						
+						<table>
+							<colgroup>
+								<col style="">
+								<col style="width: 20%;">
+							</colgroup>
+														
+							<c:forEach items="${pList}" var="post">
+								<tr>
+									<td class="text-left"><a class="post-a" data-postNo="${post.postNo}">${post.postTitle}</a></td>
+									<td class="text-right">${post.regDate}</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</div>
+					
+					<div id="paging">
+						<form id="pageForm" action="${pageContext.request.contextPath}/blog/${bVo.id}/${post.postNo}" method="POST">
+							<input id="page-cateNo" type="hidden" name="cateNo" value="${post.cateNo}">
+							<input id="page-pageNo" type="hidden" name="pageNo" value="">
+						</form>
 						
-					</table>
-				</div>
+						<ul>
+							<c:if test="${paging.prev}">
+								<li><a class="page-a" data-page="${paging.startBtn-1}">◀</a></li>
+							</c:if>
+							
+							<c:forEach begin="${paging.startBtn}" end="${paging.endBtn}" step="1" var="page">
+								<c:if test="${page == paging.currPage}">
+									<li class="active"><a class="page-a" data-page="${page}">${page}</a></li>
+								</c:if>
+								<c:if test="${page != paging.currPage}">
+									<li><a class="page-a" data-page="${page}">${page}</a></li>
+								</c:if>
+							</c:forEach>
+							
+							<c:if test="${paging.next}">
+								<li><a class="page-a" data-page="${paging.endBtn+1}">▶</a></li>
+							</c:if>
+						</ul>
+					</div>
+				</c:if>
 				<!-- //list -->
 			</div>
 			<!-- //post_area -->
@@ -119,5 +172,167 @@
 	
 	</div>
 	<!-- //wrap -->
+	
 </body>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	var postNo = "${post.postNo}";
+	
+	if (postNo != "") {
+		
+		var postVo = {
+			postNo: postNo		
+		}
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/comments/loadComment",
+			type : "post",
+			contentType : "application/json",
+			data: JSON.stringify(postVo),
+			
+			dataType: "json",
+			success : function(cmtList){
+				console.log(cmtList);
+				
+				for (var i = 0; i < cmtList.length; i++) {
+					render(cmtList[i]);
+				}
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	}
+});
+
+
+function render(cmtVo){
+	if ("${authUser.userNo}" == cmtVo.userNo) {
+		$("#read-comments").prepend(
+			  "<tr class='comment' name='del" + cmtVo.cmtNo + "'>"
+			+     "<td>" + cmtVo.userName + "</td>"
+			+     "<td>" + cmtVo.cmtContent + "</td>"
+			+     "<td>" + cmtVo.regDate + "</td>"
+			+     "<td class='delte-cmt'>"
+			+         "<a class='delete-this' data-cmtNo='" + cmtVo.cmtNo + "'>X</a>"
+			+     "</td>"
+			+ "</tr>"
+		)
+	} else {
+		$("#read-comments").prepend(
+				  "<tr class='comment'>"
+				+     "<td>" + cmtVo.userName + "</td>"
+				+     "<td>" + cmtVo.cmtContent + "</td>"
+				+     "<td>" + cmtVo.regDate + "</td>"
+				+     "<td></td>"
+				+ "</tr>"
+			)
+	}
+};
+
+
+$("#btn-addcmt").on("click", function(){
+	if ("${authUser}".length == 0) {
+		return false;
+    }
+	
+	var userNo = "${authUser.userNo}";
+	var content = $("[name=cmtContent]").val();
+	var postNo = $("#postTitle").attr("data-postNo");
+	
+	if (content == null || content == "") {
+		alert("댓글을 입력해주세요.")
+		return false;
+	}
+	
+	var cmtVo = {
+			userNo: userNo,
+			cmtContent: content,
+			postNo: postNo
+	}
+		
+	$.ajax({
+		url: "${pageContext.request.contextPath}/comments/addComment",
+		type : "post",
+		contentType : "application/json",
+		data: JSON.stringify(cmtVo),
+			
+		dataType: "json",
+		success : function(newCmt){
+			if (newCmt != null) {
+				render(newCmt);
+				$("[name=cmtContent]").val("");
+			} else {
+				alert("오류가 발생했습니다");
+			}
+		},
+		error : function(XHR, status, error) {
+			console.error(status + " : " + error);
+		}
+	});
+});
+
+
+$("#read-comments").on("click", ".delete-this", function(){
+	var cmtNo = $(this).attr("data-cmtNo");
+	
+	if (confirm("삭제하시겠습니까?")) {		
+		var cmtVo = {
+				cmtNo: cmtNo
+		}
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/comments/deleteComment",
+			type : "post",
+			contentType : "application/json",
+			data: JSON.stringify(cmtVo),
+				
+			dataType: "json",
+			success : function(result){
+				if (result) {
+					$("[name = del" + cmtNo + "]").remove();
+				}
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	} else {
+		return;
+	}
+});
+
+
+$(".cate-a").on("click", function(){
+	var cateNo = $(this).attr("data-cateNo");
+	$("#cateNo").val(cateNo);
+	
+	$("#cateForm").submit();
+});
+
+
+$(".post-a").on("click", function(){
+	var postNo = $(this).attr("data-postNo");
+	$("#postForm").attr("action", "${pageContext.request.contextPath}/blog/${bVo.id}/" + postNo);
+	
+	$("#postForm").submit();
+});
+
+
+$(".page-a").on("click", function(){
+	var pageNo = $(this).attr("data-page");
+	$("#page-pageNo").val(pageNo);
+	
+	$("#pageForm").submit();
+});
+
+
+$(".btn_s").on("click", function(){
+	$("#loginForm").submit();
+})
+
+</script>
+
 </html>

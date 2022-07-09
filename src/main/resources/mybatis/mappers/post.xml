@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="post">
+	
+	<insert id="insertPost" parameterType="PostVo">
+		<![CDATA[
+			INSERT INTO post
+			VALUES (seq_post_no.nextval, #{cateNo}, #{postTitle}, #{postContent}, SYSDATE)
+		]]>
+	</insert>
+	
+	
+	<select id="selectPost" parameterType="int" resultType="postVo">
+		<![CDATA[
+			SELECT p.post_no postNo
+			       ,p.cate_no cateNo
+			       ,p.post_title postTitle
+			       ,c.id id
+			       ,c.name userName
+			       ,p.post_content postContent
+			       ,TO_CHAR(p.reg_date, 'YYYY/MM/DD') regDate
+			FROM   post p, (SELECT c.cate_no cateNo, c.id id, u.user_name name
+			                FROM   users u, category c
+			                WHERE  u.id = c.id
+			               ) c
+			WHERE  p.cate_no = c.cateNo
+			AND    p.post_no = #{postNo}
+		]]>
+	</select>
+	
+	
+	<select id="selectRecent" parameterType="int" resultType="integer">
+		<![CDATA[
+			SELECT postNo
+			FROM   (SELECT ROWNUM, c.cate_no, p.post_no postNo
+	                FROM   users u, category c, post p
+	                WHERE  u.id = c.id
+	                AND    p.cate_no = c.cate_no
+	                AND    c.cate_no = #{cateNo}
+	                ORDER BY p.post_no DESC
+	                ) c
+	        WHERE  ROWNUM = 1
+		]]>
+	</select>
+	
+	
+	<select id="selectCatePost" parameterType="PagingVo" resultType="PostVo">
+		<![CDATA[
+			SELECT postNo
+			       ,cateNo
+			       ,postTitle
+			       ,regDate
+	        FROM (SELECT rownum rn, postNo, cateNo, postTitle, regDate
+	              FROM (SELECT rownum
+	                           ,p.post_no postNo
+				               ,c.cate_no cateNo
+				               ,p.post_title postTitle
+				               ,TO_CHAR(p.reg_date, 'YYYY/MM/DD') regDate
+	                    FROM   category c, post p
+	                    WHERE  c.cate_no = p.cate_no
+	                    AND    c.cate_no = #{cateNo}
+	                    ORDER BY p.post_no DESC)
+	             )
+	        WHERE  rn > (#{currPage} - 1) * #{lstCnt}
+	        AND    rn <= #{currPage} * #{lstCnt}
+        ]]>
+	</select>
+	
+	
+	<select id="selectCnt" parameterType="int" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM   post
+			WHERE  cate_no = #{cateNo}
+		]]>
+	</select>
+	
+	
+	<select id="selectFromPost" parameterType="PostVo" resultType="integer">
+		<![CDATA[
+			SELECT c.cate_no cateNo
+			FROM   post p, category c
+			WHERE  p.cate_no = c.cate_no
+			AND    c.id = #{id}
+			AND    p.post_no = #{postNo}
+		]]>
+	</select>
+	
+	
+	<select id="selectTemp" parameterType="PostVo" resultType="int">
+		<![CDATA[
+			SELECT rn
+			FROM   (SELECT ROWNUM rn, post_no
+			        FROM   post
+			        WHERE  cate_no = #{cateNo}
+			        ORDER BY post_no DESC)
+			WHERE  post_no = #{postNo}
+		]]>
+	</select>
+	
+</mapper>

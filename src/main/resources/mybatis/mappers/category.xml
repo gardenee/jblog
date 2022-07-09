@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="category">
+
+	<insert id="insertCategory" parameterType="CateVo">
+		<selectKey keyProperty="cateNo" resultType="int" order="BEFORE">
+			SELECT seq_category_no.nextval 
+			FROM   dual
+		</selectKey>
+		
+		<![CDATA[
+			INSERT INTO category
+			VALUES (#{cateNo}, #{id}, #{cateName}, #{description}, sysdate)
+		]]>
+	</insert>
+	
+	
+	<select id="selectCate" parameterType="String" resultType="CateVo">
+		<![CDATA[
+			SELECT ROWNUM
+			       ,c.cate_no cateNo
+			       ,c.cate_name cateName
+			       ,NVL(p.cnt, 0) postNum
+			       ,c.description description
+			FROM   category c, (SELECT cate_no, count(*) cnt
+			                    FROM   post
+			                    GROUP BY cate_no) p
+			WHERE  p.cate_no(+) = c.cate_no
+			AND    c.id = #{id}
+			ORDER BY c.cate_no DESC
+		]]>
+	</select>
+	
+	
+	<delete id="deleteCategory" parameterType="int">
+		<![CDATA[
+			DELETE category
+			WHERE  cate_no = #{cateNo}
+		]]>
+	</delete>
+	
+	
+	<select id="selectRecent" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT cateNo
+			FROM   (SELECT ROWNUM, cate_no cateNo
+			        FROM   category
+			        WHERE  id = #{id}
+			        ORDER BY cate_no DESC)
+			WHERE   ROWNUM = 1
+		]]>
+	</select>
+	
+	
+	<select id="selectName" parameterType="int" resultType="String">
+		<![CDATA[
+		    SELECT cate_name cateName
+		    FROM   category
+		    WHERE  cate_no = #{cateNo}
+		]]>
+	</select>
+</mapper>

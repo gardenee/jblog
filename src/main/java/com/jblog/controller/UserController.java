@@ -1,16 +1,20 @@
 package com.jblog.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jblog.service.UserService;
+import com.jblog.vo.PostVo;
 import com.jblog.vo.UserVo;
 
 @RequestMapping("/user")
@@ -28,7 +32,7 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value="/join", method={RequestMethod.POST})
+	@PostMapping("/join")
 	public String join(@ModelAttribute UserVo user) {
 		System.out.println("user > join");
 		
@@ -40,7 +44,7 @@ public class UserController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value="/idcheck", method={RequestMethod.POST})
+	@PostMapping("/idcheck")
 	public boolean idCheck(@RequestBody UserVo test) {
 		System.out.println("user > idcheck");
 		
@@ -51,15 +55,22 @@ public class UserController {
 	
 	
 	@RequestMapping(value="/loginForm")
-	public String loginForm() {
+	public String loginForm(@ModelAttribute PostVo post, HttpServletRequest request, Model model) {
 		System.out.println("user > loginForm");
+		
+		String referer = (String) request.getHeader("REFERER");
+		int idx = referer.indexOf("jblog");
+		referer = referer.substring(idx + 5);
+		
+		model.addAttribute("address", referer);
+		model.addAttribute("post", post);
 		
 		return "/user/loginForm";
 	}
 	
 	
 	@ResponseBody
-	@RequestMapping(value="/logincheck", method={RequestMethod.POST})
+	@PostMapping("/logincheck")
 	public boolean loginCheck(@RequestBody UserVo login) {
 		System.out.println("user > logincheck");
 		
@@ -69,25 +80,32 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value="/login", method={RequestMethod.POST})
-	public String login(@ModelAttribute UserVo login, HttpSession session) {
+	@PostMapping(value="/login")
+	public String login(@ModelAttribute UserVo login, HttpSession session, @RequestParam("address") String address, @RequestParam("cateNo") int cateNo, @RequestParam("pageNo") String pageNo, Model model) {
 		System.out.println("user > login");
 		
 		UserVo authUser = uService.getAuthUser(login);
 		session.setAttribute("authUser", authUser);
 		
-		return "redirect:/";
+		model.addAttribute("cateNo", cateNo);
+		model.addAttribute("pageNo", pageNo);
+				
+		return "redirect:" + address;
 	}
 	
 	
 	@RequestMapping(value="/logout")
-	public String logout(HttpSession session) {
+	public String logout(HttpSession session, HttpServletRequest request) {
 		System.out.println("user > logout");
-		
+				
 		session.removeAttribute("authUser");
 		session.invalidate();
 		
-		return "redirect:/";
+		String referer = (String) request.getHeader("REFERER");
+		int idx = referer.indexOf("jblog");
+		referer = referer.substring(idx + 5);
+		
+		return "redirect:" + referer;
 	}
 
 }

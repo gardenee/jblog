@@ -18,14 +18,14 @@
 
 		<div id="content">
 			<ul id="admin-menu" class="clearfix">
-				<li class="tabbtn selected"><a href="${pageContext.request.contextPath}/blog/${bVo.id}/admin/basic">기본설정</a></li>
+				<li class="tabbtn"><a href="${pageContext.request.contextPath}/blog/${bVo.id}/admin/basic">기본설정</a></li>
 				<li class="tabbtn"><a href="${pageContext.request.contextPath}/blog/${bVo.id}/admin/category">카테고리</a></li>
-				<li class="tabbtn"><a href="${pageContext.request.contextPath}/blog/${bVo.id}/admin/writeForm">글작성</a></li>
+				<li class="tabbtn selected"><a href="${pageContext.request.contextPath}/blog/${bVo.id}/admin/writeForm">글작성</a></li>
 			</ul>
 			<!-- //admin-menu -->
 			
 			<div id="admin-content">
-				<form action="" method="">
+				<form action="${pageContext.request.contextPath}/blog/${bVo.id}/admin/write" method="post">
 			      	<table id="admin-write">
 			      		<colgroup>
 							<col style="width: 100px;">
@@ -35,14 +35,14 @@
 			      		<tr>
 			      			<td class="t">포스트 제목</td>
 			      			<td >
-			      				<input type="text" name="postTitle">
+			      				<input type="text" name="postTitle" value="">
 				      		</td>
 				      		<td>
 				      			<select name="cateNo">
 				      				<!-- 카테고리 리스트 영역 -->
-				      				<option value="">자바프로그래밍</option>
-				      				<option value="">오라클</option>
-				      				<!-- 카테고리 리스트 영역 -->
+				      				<c:forEach items="${cList}" var="cate">
+				      					<option value="${cate.cateNo}">${cate.cateName}</option>
+				      				</c:forEach>
 				      			</select>
 				      		</td>
 			      		</tr>
@@ -52,7 +52,7 @@
 			      		</tr>
 			      	</table>
 			      	<div id="btnArea">
-			      		<button class="btn_l" type="submit" >포스트하기</button>
+			      		<button class="btn_l" type="submit">포스트하기</button>
 			      	</div>
 				</form>
 			
