@@ -19,7 +19,6 @@ public class CommentsController {
 	
 	@Autowired
 	private CommentsService cmtService;
-
 	
 	@ResponseBody
 	@PostMapping("/loadComment")

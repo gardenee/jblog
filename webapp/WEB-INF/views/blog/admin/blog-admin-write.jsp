@@ -12,7 +12,6 @@
 
 <body>
 	<div id="wrap">
-		
 		<!-- 개인블로그 해더 -->
 		<c:import url="/WEB-INF/views/includes/blog-header.jsp"></c:import>
 
@@ -34,7 +33,7 @@
 						</colgroup>
 			      		<tr>
 			      			<td class="t">포스트 제목</td>
-			      			<td >
+			      			<td>
 			      				<input type="text" name="postTitle" value="">
 				      		</td>
 				      		<td>
@@ -66,5 +65,7 @@
 	
 	</div>
 	<!-- //wrap -->
+	
 </body>
+
 </html>

@@ -16,6 +16,16 @@
 	</insert>
 	
 	
+	<select id="checkCategory" parameterType="CateVo" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM   category
+			WHERE  cate_name = #{cateName}
+			AND    id = #{id}
+		]]>
+	</select>
+	
+	
 	<select id="selectCate" parameterType="String" resultType="CateVo">
 		<![CDATA[
 			SELECT c.cate_no cateNo

@@ -14,7 +14,6 @@
 
 <body>
 	<div id="wrap">
-		
 		<!-- 개인블로그 해더 -->
 		<c:import url="/WEB-INF/views/includes/blog-header.jsp"></c:import>
 
@@ -27,7 +26,7 @@
 			<!-- //admin-menu -->
 			
 			<div id="admin-content">
-			
+		
 				<table id="admin-cate-list">
 					<colgroup>
 						<col style="width: 50px;">
@@ -47,7 +46,6 @@
 		      		</thead>
 		      		<tbody id="cateList">
 		      			<!-- 리스트 영역 -->
-		      			
 					</tbody>
 				</table>
       	
@@ -72,30 +70,30 @@
 			
 			</div>
 			<!-- //admin-content -->
+			
 		</div>	
 		<!-- //content -->
-		
 		
 		<!-- 개인블로그 푸터 -->
 		<c:import url="/WEB-INF/views/includes/blog-footer.jsp"></c:import>
 		
 	</div>
 	<!-- //wrap -->
+	
 </body>
 
 <script type="text/javascript">
 
 var temp = 0;
-var count = 0;
+var count = 0; //전체 카테고리 수
 
 $(document).ready(function(){
-	$.ajax({	
+	$.ajax({	//카테고리 테이블 불러오기
 		url: "${pageContext.request.contextPath}/blog/${authUser.id}/admin/categoryList",
 		type : "post",
 		async: false,
 		
 		success : function(cList){
-			
 			count = cList.length;
 			temp = count;
 			
@@ -110,7 +108,7 @@ $(document).ready(function(){
 })
 
 
-function render(category) {	
+function render(category) {	//초기 카테고리 테이블 불러올 때 사용
 	$("#cateList").append(
 			"<tr data-no='" + category.cateNo + "'>"
 		+ 		"<td class='info' id='no" + temp + "'>" + temp + "</td>" 
@@ -125,11 +123,12 @@ function render(category) {
 	temp -= 1;
 }
 
-$("#cateList").on("click", ".btnCateDel", function() {
+
+$("#cateList").on("click", ".btnCateDel", function() { // 삭제 버튼 클릭
 	var no = $(this).attr("data-num");
 	var postNum = $(this).attr("data-post");
     var cateName = $(this).attr("data-name");
-    var number = parseInt($(this).parent().siblings(".info").html());
+    var number = parseInt($(this).parent().siblings(".info").text());
     
 	if (postNum != 0) {
 		alert("삭제할 수 없습니다. (게시글 존재)")
@@ -141,11 +140,11 @@ $("#cateList").on("click", ".btnCateDel", function() {
 		
 		return false;
 	
-	} else {
+	} else { // 삭제하기
 		var map = {cateNo: no};
 		
 		$.ajax({	
-			url: "${pageContext.request.contextPath}/blog/${authUser.id}/admin/deleteCategory",
+			url: "${pageContext.request.contextPath}/blog/${authUser.id}/admin/deleteCategory", // db에서 제거
 			type : "post",
 			contentType : "application/json",
 			data : JSON.stringify(map),
@@ -153,8 +152,8 @@ $("#cateList").on("click", ".btnCateDel", function() {
 			dataType: "json",
 			success : function(result){
 				if (result) {
-					$("[data-no=" + no + "]").remove();
-				   	update(number);
+					$("[data-no=" + no + "]").remove(); // 테이블에서 제거
+				   	update(number); // 번호 밀린 것 처리
 					count -= 1;
 
 					alert("삭제되었습니다.")
@@ -171,7 +170,7 @@ $("#cateList").on("click", ".btnCateDel", function() {
 });
 
 
-function update(number) {
+function update(number) { // 번호 갱신(삭제한 번호+1부터 끝까지)
 	for (var i = (number + 1); i <= count; i++) {
 		$("#no" + i).text(i-1);
 		$("#no" + i).attr("id", "no" + (i-1))
@@ -179,7 +178,7 @@ function update(number) {
 }
 
 
-$("#btnAddCate").on("click", function(){
+$("#btnAddCate").on("click", function(){ // 카테고리 추가
 	var cateName = $("[name=name]").val();
 	var description = $("[name=desc]").val();
 	
@@ -188,8 +187,7 @@ $("#btnAddCate").on("click", function(){
 		
 		return false;
 	}
-	
-	
+		
 	var map = {
 			id: "${authUser.id}",
 			cateName: cateName,
@@ -197,14 +195,14 @@ $("#btnAddCate").on("click", function(){
 	};
 	
 	$.ajax({	
-		url: "${pageContext.request.contextPath}/blog/${authUser.id}/admin/addCategory",
+		url: "${pageContext.request.contextPath}/blog/${authUser.id}/admin/addCategory", // 카테고리 추가
 		type : "post",
 		contentType : "application/json",
 		data : JSON.stringify(map),
 		
 		dataType: "json",
 		success : function(cateNo){
-			if  (cateNo != -1) {
+			if  (cateNo != -1) { 
 				var no = cateNo;
 				
 				$("#cateList").prepend(
@@ -219,21 +217,21 @@ $("#btnAddCate").on("click", function(){
 					+	"</tr>"
 				);
 				
-				$("[name=name]").val("");
-				$("[name=desc]").val("");
 				count += 1;
 				
 				alert("추가되었습니다.");
 				
-			} else {
-				alert("오류");
+			} else { // 이름 겹치거나 오류 발생하면 cateNo = -1 로 넘어옴
+				alert("사용할 수 없는 카테고리명입니다.");
 			}
 		},
 		error : function(XHR, status, error) {
 			console.error(status + " : " + error);
 		}
 	});	
-		
+	
+	$("[name=name]").val("");
+	$("[name=desc]").val("");
 });
 
 </script>

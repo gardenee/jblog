@@ -8,12 +8,10 @@
 <title>JBlog</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
 
-
 </head>
 
 <body>
 	<div id="wrap">
-		
 		<!-- 개인블로그 해더 -->
 		<c:import url="/WEB-INF/views/includes/blog-header.jsp"></c:import>
 
@@ -26,6 +24,7 @@
 			
 			<!-- //admin-menu -->
 			<div id="admin-content">
+			
 				<form id="basic-form" action="${pageContext.request.contextPath}/blog/${bVo.id}/basicChange" method="post" enctype="multipart/form-data">
 	 		      	<table id="admin-basic">
 	 		      		<colgroup>
@@ -45,6 +44,7 @@
 			      			<td><input id="textLogo" type="file" name="file"></td>      			
 			      		</tr>           		
 			      	</table>
+			      	
 			      	<div id="btnArea">
 			      		<button class="btn_l" type="submit" >기본설정변경</button>
 			      	</div>
@@ -52,15 +52,16 @@
 			
 			</div>
 			<!-- //admin-content -->
+			
 		</div>	
 		<!-- //content -->
-		
 		
 		<!-- 개인블로그 푸터 -->
 		<c:import url="/WEB-INF/views/includes/blog-footer.jsp"></c:import>
 	
-	
 	</div>
 	<!-- //wrap -->
+	
 </body>
+
 </html>

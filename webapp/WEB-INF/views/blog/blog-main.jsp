@@ -22,17 +22,16 @@
 		<div id="content" class="clearfix">
 			<div id="profilecate_area">
 				<div id="profile">
-					
 					<!-- 기본이미지 -->
 					<img id="proImg" src="${pageContext.request.contextPath}${bVo.logoFile}" />
-					
 					<div id="nick">${bVo.name}(${bVo.id})님</div>
 				</div>
+				
 				<div id="cate">
 					<div class="text-left">
 						<strong>카테고리</strong>
 					</div>
-					
+		
 					<form id="cateForm" action="${pageContext.request.contextPath}/blog/${bVo.id}" method="POST">
 						<input id="cateNo" type="hidden" name="cateNo" value="">
 					</form>
@@ -90,8 +89,6 @@
 							<!--  //코멘트 읽기 -->
 						</div>
 					<!--  ///comments area -->
-					
-					
 				</c:if>
 				<!-- //post -->
 				
@@ -103,10 +100,11 @@
 								<div id="postNick"></div>
 					</div>
 				    
-					<div id="post" >
+					<div id="post">
 					</div>
 				</c:if>
 				
+				<!-- 리스트 영역 -->
 				<c:if test="${!empty(post)}">
 					<div id="list">
 						<div id="listTitle" class="text-left"><strong>${cateName}의 글</strong></div>
@@ -130,7 +128,9 @@
 							</c:forEach>
 						</table>
 					</div>
+					<!--  // 리스트 영역 -->
 					
+					<!-- 페이징 -->
 					<div id="paging">
 						<form id="pageForm" action="${pageContext.request.contextPath}/blog/${bVo.id}/${post.postNo}" method="POST">
 							<input id="page-cateNo" type="hidden" name="cateNo" value="${post.cateNo}">
@@ -156,20 +156,17 @@
 							</c:if>
 						</ul>
 					</div>
+					<!-- //페이징 -->
 				</c:if>
 				<!-- //list -->
 			</div>
 			<!-- //post_area -->
-			
-			
 			
 		</div>	
 		<!-- //content -->
 		<div class=></div>
 		<c:import url="/WEB-INF/views/includes/blog-footer.jsp"></c:import>
 		
-	
-	
 	</div>
 	<!-- //wrap -->
 	
@@ -177,7 +174,7 @@
 
 <script type="text/javascript">
 
-$(document).ready(function(){
+$(document).ready(function(){ // 페이지 로딩 시 댓글 데려오기
 	var postNo = "${post.postNo}";
 	
 	if (postNo != "") {
@@ -208,7 +205,7 @@ $(document).ready(function(){
 });
 
 
-function render(cmtVo){
+function render(cmtVo){ // 댓글 추가 함수
 	if ("${authUser.userNo}" == cmtVo.userNo) {
 		$("#read-comments").prepend(
 			  "<tr class='comment' name='del" + cmtVo.cmtNo + "'>"
@@ -233,8 +230,8 @@ function render(cmtVo){
 };
 
 
-$("#btn-addcmt").on("click", function(){
-	if ("${authUser}".length == 0) {
+$("#btn-addcmt").on("click", function(){ // 댓글 추가 버튼 클릭
+	if ("${authUser}".length == 0) { // 로그인 풀린 경우
 		return false;
     }
 	
@@ -242,7 +239,7 @@ $("#btn-addcmt").on("click", function(){
 	var content = $("[name=cmtContent]").val();
 	var postNo = $("#postTitle").attr("data-postNo");
 	
-	if (content == null || content == "") {
+	if (content == null || content == "") { // 댓글 없는 데 submit 누른 경우
 		alert("댓글을 입력해주세요.")
 		return false;
 	}
@@ -253,7 +250,7 @@ $("#btn-addcmt").on("click", function(){
 			postNo: postNo
 	}
 		
-	$.ajax({
+	$.ajax({ // db에 댓글 추가
 		url: "${pageContext.request.contextPath}/comments/addComment",
 		type : "post",
 		contentType : "application/json",
@@ -275,7 +272,7 @@ $("#btn-addcmt").on("click", function(){
 });
 
 
-$("#read-comments").on("click", ".delete-this", function(){
+$("#read-comments").on("click", ".delete-this", function(){ // 댓글 삭제 버튼 클릭
 	var cmtNo = $(this).attr("data-cmtNo");
 	
 	if (confirm("삭제하시겠습니까?")) {		
@@ -305,7 +302,7 @@ $("#read-comments").on("click", ".delete-this", function(){
 });
 
 
-$(".cate-a").on("click", function(){
+$(".cate-a").on("click", function(){ // 카테고리 칸에서 카테고리 선택
 	var cateNo = $(this).attr("data-cateNo");
 	$("#cateNo").val(cateNo);
 	
@@ -313,7 +310,7 @@ $(".cate-a").on("click", function(){
 });
 
 
-$(".post-a").on("click", function(){
+$(".post-a").on("click", function(){ // 게시글 리스트에서 게시글 선택
 	var postNo = $(this).attr("data-postNo");
 	$("#postForm").attr("action", "${pageContext.request.contextPath}/blog/${bVo.id}/" + postNo);
 	
@@ -321,7 +318,7 @@ $(".post-a").on("click", function(){
 });
 
 
-$(".page-a").on("click", function(){
+$(".page-a").on("click", function(){ // 페이징 버튼 클릭
 	var pageNo = $(this).attr("data-page");
 	$("#page-pageNo").val(pageNo);
 	
@@ -329,7 +326,7 @@ $(".page-a").on("click", function(){
 });
 
 
-$(".btn_s").on("click", function(){
+$(".btn_s").on("click", function(){ // 로그인 버튼 클릭(주소 유지용)
 	$("#loginForm").submit();
 })
 

@@ -8,7 +8,6 @@
 <title>JBlog</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
 
-
 </head>
 <body>
 	<div id="center-content">
@@ -26,10 +25,11 @@
 			</p>
 		</div>
 		
-		
 		<!-- 메인 푸터  자리-->
 		<c:import url="/WEB-INF/views/includes/main-footer.jsp"></c:import>
 		
 	</div>
+	
 </body>
+
 </html>

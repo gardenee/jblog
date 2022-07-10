@@ -16,16 +16,13 @@ public class UserDao {
 		return sqlSession.insert("user.insertUser", user);
 	}
 	
-	
 	public int IDcheck(String check) {
 		return sqlSession.selectOne("user.IDcheck", check);
 	}
 	
-	
 	public int loginCheck(UserVo login) {
 		return sqlSession.selectOne("user.loginCheck", login);
 	}
-	
 	
 	public UserVo selectAuthUser(UserVo login) {
 		return sqlSession.selectOne("user.selectAuthUser", login);

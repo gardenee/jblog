@@ -7,17 +7,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>JBlog</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
+
 </head>
+
 <body>
 	<div class="center-content">
-		
 		<!-- 메인해더 -->
 		<c:import url="/WEB-INF/views/includes/main-header.jsp"></c:import>
 		
 		<h1>잘못된 접근입니다.</h1>
 		<a href="${pageContext.request.contextPath}/blog/${id}">메인으로 돌아가기</a>
-
 	</div>
 
 </body>
+
 </html>

@@ -20,7 +20,7 @@ public class UserService {
 	@Autowired
 	private CategoryDao cDao;
 	
-	public String join(UserVo user) {
+	public String join(UserVo user) { // 회원가입
 		String result = "fail";
 		
 		int count = uDao.insertUser(user);
@@ -29,11 +29,11 @@ public class UserService {
 			System.out.println("[회원가입 성공]");
 			result = "success";
 			
-			BlogVo newBlog = new BlogVo(user.getId(), user.getUserName()+"의 블로그입니다.", "/assets/images/spring-logo.jpg");
+			BlogVo newBlog = new BlogVo(user.getId(), user.getUserName()+"의 블로그입니다.", "/assets/images/spring-logo.jpg"); // 블로그 개설
 			count = bDao.insertBlog(newBlog);
 			if (count > 0) System.out.println("[블로그 개설 성공]");
 			
-			CategoryVo cate = new CategoryVo(user.getId(), "미분류", "");
+			CategoryVo cate = new CategoryVo(user.getId(), "미분류", ""); // 기본 카테고리 만들기
 			count = cDao.insertCategory(cate);
 			if (count > 0) System.out.println("[카테고리 생성 완료]");
 			
@@ -43,9 +43,9 @@ public class UserService {
 	}
 	
 	
-	public boolean IDcheck(String check) {
-		int count = uDao.IDcheck(check);
+	public boolean IDcheck(String check) { // 아이디 중복확인
 		boolean result = false;
+		int count = uDao.IDcheck(check);
 		
 		if (count > 0) System.out.println("[이미 사용중인 아이디입니다.]");
 		else {
@@ -57,10 +57,10 @@ public class UserService {
 	}
 	
 	
-	public boolean loginCheck(UserVo login) {
-		int count = uDao.loginCheck(login);
+	public boolean loginCheck(UserVo login) { // 아이디-비번 확인
 		boolean result = false;
-		
+		int count = uDao.loginCheck(login);
+				
 		if (count > 0) {
 			System.out.println("[비밀번호 일치]");
 			result = true;
@@ -71,7 +71,7 @@ public class UserService {
 	}
 	
 	
-	public UserVo getAuthUser(UserVo login) {
+	public UserVo getAuthUser(UserVo login) { // 로그인 후 세션에 저장할 값 불러오기
 		UserVo authUser = uDao.selectAuthUser(login);
 		System.out.println("[로그인 성공]");
 		

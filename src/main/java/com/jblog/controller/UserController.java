@@ -24,7 +24,7 @@ public class UserController {
 	@Autowired
 	private UserService uService;
 		
-	@RequestMapping(value="/joinForm")
+	@RequestMapping(value="/joinForm") // 회원가입페이지 이동
 	public String joinForm() {
 		System.out.println("user > joinForm");
 		
@@ -32,7 +32,7 @@ public class UserController {
 	}
 	
 	
-	@PostMapping("/join")
+	@PostMapping("/join") // 회원가입
 	public String join(@ModelAttribute UserVo user) {
 		System.out.println("user > join");
 		
@@ -44,7 +44,7 @@ public class UserController {
 	
 	
 	@ResponseBody
-	@PostMapping("/idcheck")
+	@PostMapping("/idcheck") // 아이디 중복 확인용
 	public boolean idCheck(@RequestBody UserVo test) {
 		System.out.println("user > idcheck");
 		
@@ -52,11 +52,11 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value="/loginForm")
+	@RequestMapping(value="/loginForm") // 로그인 페이지 연결
 	public String loginForm(@ModelAttribute PostVo post, HttpServletRequest request, Model model) {
 		System.out.println("user > loginForm");
 		
-		String referer = request.getHeader("REFERER");
+		String referer = request.getHeader("REFERER"); // 직전 주소 저장용
 		int idx = referer.indexOf("jblog");
 		referer = referer.substring(idx + 5);
 
@@ -68,7 +68,7 @@ public class UserController {
 	
 	
 	@ResponseBody
-	@PostMapping("/logincheck")
+	@PostMapping("/logincheck") // 아이디-비밀번호 일치 확인
 	public boolean loginCheck(@RequestBody UserVo login) {
 		System.out.println("user > logincheck");
 		
@@ -78,11 +78,10 @@ public class UserController {
 	}
 	
 	
-	@PostMapping(value="/login")
+	@PostMapping(value="/login") // 로그인
 	public String login(@ModelAttribute UserVo login, HttpSession session, @RequestParam("address") String address, @RequestParam("cateNo") int cateNo, @RequestParam("pageNo") String pageNo, Model model) {
 		System.out.println("user > login");
 		
-		System.out.println(address);
 		UserVo authUser = uService.getAuthUser(login);
 		session.setAttribute("authUser", authUser);
 		
@@ -93,18 +92,18 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(value="/logout")
+	@RequestMapping(value="/logout") // 로그아웃
 	public String logout(HttpSession session, HttpServletRequest request) {
 		System.out.println("user > logout");
 				
 		session.removeAttribute("authUser");
 		session.invalidate();
 		
-		String referer = request.getHeader("REFERER");
+		String referer = request.getHeader("REFERER"); // 주소 저장용
 		int idx = referer.indexOf("jblog");
 		referer = referer.substring(idx + 5);
 		
-		if (referer.contains("/admin/")) {
+		if (referer.contains("/admin/")) { // 본인 관리 페이지에서 로그아웃한 경우 403이 아닌 블로그 메인으로 이동
 			idx = referer.indexOf("/admin/");
 			referer = referer.substring(0, idx+1);
 		}

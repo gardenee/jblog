@@ -1,6 +1,5 @@
 package com.jblog.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,7 @@ public class MainController {
 	
 	@Autowired
 	private BlogService bService;
-	
-	
+		
 	@RequestMapping("/")
 	public String main(@RequestParam(value="keyword", defaultValue="") String keyword, @RequestParam(value="pageNo", defaultValue="1") int pageNo, @RequestParam(value="option", required=false) String option, Model model) {
 		System.out.println("main > search " + keyword + "(" + option + ")");

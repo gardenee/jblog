@@ -19,7 +19,6 @@ public class BlogDao {
 		return sqlSession.selectOne("blog.selectBlog", id);
 	}
 	
-	
 	public int insertBlog(BlogVo newBlog) {
 		return sqlSession.insert("blog.insertBlog", newBlog);
 	}

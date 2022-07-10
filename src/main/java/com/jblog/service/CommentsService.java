@@ -14,15 +14,14 @@ public class CommentsService {
 	@Autowired
 	private CommentsDao cmtDao;
 	
-	
-	public List<CommentsVo> selectComment(int postNo) {
+	public List<CommentsVo> selectComment(int postNo) { // 댓글 불러오기
 		List<CommentsVo> cmtVo = cmtDao.selectComment(postNo);
 		
 		return cmtVo;
 	}
 
 		
-	public CommentsVo insertComment(CommentsVo cmt) {
+	public CommentsVo insertComment(CommentsVo cmt) { // 댓글 삽입
 		int count = cmtDao.insertComment(cmt);
 		int cmtNo = cmt.getCmtNo();
 		cmt = new CommentsVo();
@@ -37,7 +36,7 @@ public class CommentsService {
 	}
 	
 	
-	public boolean deleteComment(int cmtNo) {
+	public boolean deleteComment(int cmtNo) { // 댓글 삭제
 		boolean result = false;
 		int count = cmtDao.deleteComment(cmtNo);
 		

@@ -13,7 +13,6 @@
 </head>
 <body>
 	<div id="center-content">
-		
 		<!--메인 해더 자리 -->
 		<c:import url="/WEB-INF/views/includes/main-header.jsp"></c:import>
 		
@@ -96,12 +95,19 @@
 
 <script type="text/javascript">
 
-$("#btnSearch").on("click", function(){
+$("#btnSearch").on("click", function(){ // 검색 옵션 선택 여부 확인
 	if (!$("#rdo-title").is(":checked") && !$("#rdo-userName").is(":checked")) {
 		alert("검색 옵션을 선택해주세요");
 	}
 });
 
+
+$(".page-a").on("click", function(){ // 검색하기
+	var pageNo = $(this).attr("data-page");
+	$("#pageNo").val(pageNo);
+	
+	$("#pagingForm").submit();
+});
 
 
 </script>

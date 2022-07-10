@@ -32,20 +32,20 @@ public class BlogController {
 	@Autowired
 	private BlogService bService;
 	
-	@RequestMapping({"/{id}/{postNo}", "/{id}"})
+	@RequestMapping({"/{id}/{postNo}", "/{id}"}) // 블로그 메인
 	public String main(@PathVariable("id") String id, @PathVariable(required=false) Integer postNo, @RequestParam(required=false) Integer cateNo, @RequestParam(required=false) Integer pageNo, Model model, HttpServletRequest request) {
 		System.out.println("blog > " + id + " > main");
 		
 		Map<String, Object> map = bService.blogInfo(new PostVo(postNo, cateNo, pageNo, id));
 		model.addAllAttributes(map);
 		
-		if (map.containsKey("error")) return "/error/404";
+		if (map.containsKey("error")) return "/error/404"; // 해당 id에 해당 번호의 포스트가 없는 경우 404로
 				
 		return "/blog/blog-main";
 	}
 
 	
-	@RequestMapping("/{id}/admin/basic")
+	@RequestMapping("/{id}/admin/basic") // 기본 설정 변경
 	public String adminBasic(@PathVariable("id") String id, Model model, HttpSession session) {
 		System.out.println("blog > " + id + "> admin > basic");
 		
@@ -54,7 +54,7 @@ public class BlogController {
 		if (authUser == null || !authUser.getId().equals(id)) {
 			model.addAttribute("id", id);
 			
-			return "/error/403";
+			return "/error/403"; // 로그인 풀렸거나 남의 관리 페이지 접근 시도하면 403
 		}
 		
 		Map<String, Object> map = bService.blogInfo(id);
@@ -76,7 +76,7 @@ public class BlogController {
 	}
 	
 	
-	@RequestMapping("/{id}/admin/category")
+	@RequestMapping("/{id}/admin/category") // 카테고리 설정 변경
 	public String adminCategory(@PathVariable("id") String id, Model model, HttpSession session) {
 		System.out.println("blog > " + id + "> admin > category");
 		
@@ -84,7 +84,7 @@ public class BlogController {
 		if (authUser == null || !authUser.getId().equals(id)) {
 			model.addAttribute("id", id);
 
-			return "/error/403";
+			return "/error/403"; // 로그인 풀렸거나 남의 관리 페이지 접근 시도하면 403
 		}
 		
 		Map<String, Object> map = bService.blogInfo(id);
@@ -95,7 +95,7 @@ public class BlogController {
 	
 	
 	@ResponseBody
-	@RequestMapping("/{id}/admin/categoryList")
+	@RequestMapping("/{id}/admin/categoryList") // 카테고리 목록 불러오기
 	public List<CategoryVo> categoryList(@PathVariable("id") String id) {
 		System.out.println("blog > admin > categoryList");
 		
@@ -106,7 +106,7 @@ public class BlogController {
 	
 	
 	@ResponseBody
-	@RequestMapping("/{id}/admin/deleteCategory")
+	@RequestMapping("/{id}/admin/deleteCategory") // 카테고리 삭제
 	public boolean deleteCategory(@RequestBody PostVo post) {
 		System.out.println("blog > admin > deleteCategory");
 		
@@ -117,7 +117,7 @@ public class BlogController {
 	
 	
 	@ResponseBody
-	@RequestMapping("/{id}/admin/addCategory")
+	@RequestMapping("/{id}/admin/addCategory") // 카테고리 추가
 	public int addCategory(@RequestBody CategoryVo cate) {
 		System.out.println("blog > admin > addCategory");
 		
@@ -127,7 +127,7 @@ public class BlogController {
 	}
 	
 	
-	@RequestMapping("/{id}/admin/writeForm")
+	@RequestMapping("/{id}/admin/writeForm") // 글 작성 페이지
 	public String adminWrite(@PathVariable("id") String id, Model model, HttpSession session) {
 		System.out.println("blog > " + id + "> admin > write");
 		

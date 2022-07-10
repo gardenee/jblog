@@ -69,9 +69,9 @@
 
 <script type="text/javascript">
 
-var checked = ""
+var checked = "" // 중복체크된 아이디 저장
 
-$("#btnIdCheck").on("click", function(){
+$("#btnIdCheck").on("click", function(){ // 중복체크 전 아이디 입력 여부 확인
 	checked = "";
 	
 	if ($("#txtId").val().length <= 0) {
@@ -81,8 +81,9 @@ $("#btnIdCheck").on("click", function(){
 	}
 });
 
-function idcheck() {
-	var id = $("#txtId").val();
+
+function idcheck() { // 아이디 중복확인
+	var id = $("#txtId").val(); // 초기화
 	
 	var test = {id: id};
 	
@@ -101,7 +102,7 @@ function idcheck() {
 				
 			} else {
 				$("#tdMsg").text("사용할 수 있는 아이디입니다.");
-				checked = id;
+				checked = id; // 체크됐으면 저장
 			}			
 		},
 		error : function(XHR, status, error) {
@@ -111,8 +112,7 @@ function idcheck() {
 }
 
 
-$(btnJoin).on("click", function(){
-	
+$(btnJoin).on("click", function(){ // 폼 다 작성했는지 확인
 	if ($("#txtId").val().length <= 0) {
 		alert("아이디를 입력해주세요.")
 		return false;

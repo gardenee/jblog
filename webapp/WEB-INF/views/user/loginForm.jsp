@@ -12,9 +12,7 @@
 
 </head>
 <body>
-	<div id="center-content">
-		
-		
+	<div id="center-content">		
 		<!-- 메인 해더 -->
 		<c:import url="/WEB-INF/views/includes/main-header.jsp"></c:import>
 		
@@ -47,19 +45,17 @@
 					<button id="login-btn" class="btn" type="submit">로그인</button>
 				</div>
 			</form>
-		
 		</div>
 		
 		<!-- 메인 푸터  자리-->
 		<c:import url="/WEB-INF/views/includes/main-footer.jsp"></c:import>
-		
 	</div>
 	
 </body>
 
 <script type="text/javascript">
 
-$("#login-btn").on("click", function(){
+$("#login-btn").on("click", function(){ // 로그인 버튼 클릭
 	var rv = true;
 	
 	var login = {
@@ -67,7 +63,7 @@ $("#login-btn").on("click", function(){
 			password : $("#textPassword").val()
 	}
 	
-	$.ajax({	
+	$.ajax({	// 아이디-비밀번호 일치여부 확인
 		url: "${pageContext.request.contextPath}/user/logincheck",
 		type : "post",
 		async: false,
@@ -76,12 +72,12 @@ $("#login-btn").on("click", function(){
 		
 		dataType: "json",
 		success : function(result){
-			if (!result) {
+			if (!result) { // 틀렸을 시 rv = false;
 				$("#tdMsg span").text("아이디 또는 비밀번호를 확인해주세요.");
 				$("#textId").val("");
 				$("#textPassword").val("");
 				
-				rv= false;
+				rv= false; 
 			}
 		},
 		error : function(XHR, status, error) {

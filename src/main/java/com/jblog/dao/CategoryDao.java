@@ -18,6 +18,9 @@ public class CategoryDao {
 		return sqlSession.insert("category.insertCategory", cate);
 	}
 	
+	public int checkCategory(CategoryVo cate) {
+		return sqlSession.selectOne("category.checkCategory", cate);
+	}
 	
 	public List<CategoryVo> selectCate(String id) {
 		return sqlSession.selectList("category.selectCate", id);
@@ -33,11 +36,9 @@ public class CategoryDao {
 		return sqlSession.delete("category.deleteCategory", cateNo);
 	}
 	
-	
 	public int selectRecent(String id) {
 		return sqlSession.selectOne("category.selectRecent", id);
 	}
-	
 	
 	public String selectName(int cateNo) {
 		return sqlSession.selectOne("category.selectName", cateNo);

@@ -19,21 +19,17 @@ public class PostDao {
 		return sqlSession.insert("post.insertPost", post);
 	}
 	
-	
 	public Integer selectRecent(int cateNo) {
 		return sqlSession.selectOne("post.selectRecent", cateNo);
 	}
-	
 	
 	public PostVo selectPost(int postNo) {
 		return sqlSession.selectOne("post.selectPost", postNo);
 	}
 	
-	
 	public List<PostVo> selectCatePost(PagingVo post) {
 		return sqlSession.selectList("post.selectCatePost", post);
 	}
-	
 	
 	public Integer selectCnt(int cateNo) {
 		return sqlSession.selectOne("post.selectCnt", cateNo);
