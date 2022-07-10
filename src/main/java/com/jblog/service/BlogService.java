@@ -3,6 +3,7 @@ package com.jblog.service;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class BlogService {
 	public Map<String, Object> blogInfo(String id) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("bVo", bDao.selectBlog(id));
-		map.put("cList", cDao.selectCate(id));
+		map.put("cList", cDao.selectCateName(id));
 		
 		return map;
 	}
@@ -51,47 +52,69 @@ public class BlogService {
 		
 		map.put("bVo", bDao.selectBlog(id));
 		map.put("cList", cDao.selectCate(id));
-		// 원래대로 하고... postNo가 노답인 경우만 체크?
-		if (postNo == 0) {
-			if (cateNo == 0) cateNo = cDao.selectRecent(id);
-			
-			postNo = pDao.selectRecent(cateNo);
-			if (postNo == null) postNo = 0;
-			
-			if (pageNo == 0) pageNo = 1;
-			
-		} else {
+		
+		
+		if (cateNo == 0 && pageNo == 0 && postNo != 0) {
 			cateNo = pDao.selectFromPost(new PostVo(postNo, id));
 			
 			if (cateNo == null) {
-				map.put("error", "error");
+				map.put("error", "404error");
 				
 				return map;
 			}
+			
 			int temp = pDao.selectTemp(new PostVo(postNo, cateNo));
 			pageNo = (temp - 1) / 5 + 1;
 		}
-
-		map.put("cateName", cDao.selectName(cateNo));
 		
+
+		if (cateNo == 0) cateNo = cDao.selectRecent(id);
+		map.put("cateName", cDao.selectName(cateNo));
+
+		if (pageNo == 0) pageNo = 1;
 		List<PostVo> pList = pDao.selectCatePost(new PagingVo(cateNo, pageNo, 5));
 		map.put("pList", pList);
+				
 		
 		if (pList.isEmpty()) {
 			map.put("post", null);
 			map.put("paging", null);
 			
 		} else {
+			if (postNo == 0) postNo = pDao.selectRecent(cateNo);
 			map.put("post", pDao.selectPost(postNo));
 			
 		    int totCnt = pDao.selectCnt(cateNo);
 			map.put("paging", new PagingVo(totCnt, pageNo));
 		}
-		
-		System.out.println("PostNO " + postNo + " cateNo " + cateNo + " pageNo " + pageNo);
+
 		return map;
 	}
 	
+	
+	public Map<String, Object> search(String keyword, String option, int pageNo) {		
+		Map<String, Object> map = new HashMap<>();
+		List<BlogVo> bList = new ArrayList<>();
+		int count = 0;
+		
+		if (option != null) {
+			map.put("pageNo", pageNo);
+			map.put("keyword", keyword);
+						
+			if (option.equals("title")) {
+				bList = bDao.selectByTitle(map);
+				count = bDao.selectTitleCnt(keyword);
+				
+			} else if (option.equals("name")) {
+				bList = bDao.selectByName(map);
+				count = bDao.selectNameCnt(keyword);
+			}
+			map.put("bList", bList);
+			map.put("paging", new PagingVo(count, pageNo));
+		}
+		return map;
+	}
+
 	
 	public void blogBasicUpdate(BlogVo bVo, MultipartFile file, String title) {
 		if (!file.isEmpty()) {
@@ -158,5 +181,15 @@ public class BlogService {
 		} else System.out.println("[카테고리 추가 실패]");
 		
 		return cateNo;
+	}
+	
+	
+	public List<CategoryVo> getCategory(String id) {
+		System.out.println("id " + id);
+		List<CategoryVo> cList = cDao.selectCate(id);
+		System.out.println(cList.toString());
+		System.out.println("[" + cList.size() + "건 불러옴]");
+		
+		return cList;
 	}
 }

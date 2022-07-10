@@ -18,8 +18,7 @@
 	
 	<select id="selectCate" parameterType="String" resultType="CateVo">
 		<![CDATA[
-			SELECT ROWNUM
-			       ,c.cate_no cateNo
+			SELECT c.cate_no cateNo
 			       ,c.cate_name cateName
 			       ,NVL(p.cnt, 0) postNum
 			       ,c.description description
@@ -29,6 +28,16 @@
 			WHERE  p.cate_no(+) = c.cate_no
 			AND    c.id = #{id}
 			ORDER BY c.cate_no DESC
+		]]>
+	</select>
+	
+	
+	<select id="selectCateName" parameterType="String" resultType="cateVo">
+		<![CDATA[
+			SELECT cate_no cateNo
+			       ,cate_name cateName
+			FROM   category
+			WHERE  c.id = #{id}
 		]]>
 	</select>
 	

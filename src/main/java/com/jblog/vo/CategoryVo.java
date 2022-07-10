@@ -8,7 +8,6 @@ public class CategoryVo {
 	private String description;
 	private String regDate;
 	private int postNum;
-	private int rowNum;
 	
 	public CategoryVo() {
 		
@@ -76,14 +75,6 @@ public class CategoryVo {
 		this.postNum = postNum;
 	}
 	
-	public int getRowNum() {
-		return rowNum;
-	}
-
-	public void setRowNum(int rowNum) {
-		this.rowNum = rowNum;
-	}
-
 	@Override
 	public String toString() {
 		return "CategoryVo [cateNo=" + cateNo + ", id=" + id + ", cateName=" + cateName + ", description=" + description + ", regDate=" + regDate + "]";

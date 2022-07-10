@@ -57,6 +57,31 @@
 							</tr>
 						</table>
 					</c:forEach>
+					
+					<div id="paging">
+						<form id="pagingForm" action="${pageContext.request.contextPath}/" method="POST">
+							<input type="hidden" name="option" value="${option}">
+							<input type="hidden" name="keyword" value="${keyword}">
+							<input id="pageNo" type="hidden" name="pageNo" value="">
+						</form>
+						
+						<c:if test="${paging.prev}">
+							<li><a class="page-a" data-page="${paging.startBtn-1}">◀</a></li>
+						</c:if>
+						
+						<c:forEach begin="${paging.startBtn}" end="${paging.endBtn}" step="1" var="page">
+							<c:if test="${page == paging.currPage}">
+								<li class="active"><a class="page-a" data-page="${page}">${page}</a></li>
+							</c:if>
+							<c:if test="${page != paging.currPage}">
+								<li><a class="page-a" data-page="${page}">${page}</a></li>
+							</c:if>
+						</c:forEach>
+						
+						<c:if test="${paging.next}">
+							<li><a class="page-a" data-page="${paging.endBtn+1}">▶</a></li>
+						</c:if>
+					</div>
 				</c:if>
 			</c:if> 
 			
@@ -76,6 +101,9 @@ $("#btnSearch").on("click", function(){
 		alert("검색 옵션을 선택해주세요");
 	}
 });
+
+
+
 </script>
 
 </html>

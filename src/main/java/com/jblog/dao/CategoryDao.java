@@ -24,6 +24,10 @@ public class CategoryDao {
 
 	}
 	
+	public List<CategoryVo> selectCateName(String id) {
+		return sqlSession.selectList("category.selectCate", id);
+
+	}	
 	
 	public int deleteCategory(int cateNo) {
 		return sqlSession.delete("category.deleteCategory", cateNo);
@@ -38,4 +42,5 @@ public class CategoryDao {
 	public String selectName(int cateNo) {
 		return sqlSession.selectOne("category.selectName", cateNo);
 	}
+	
 }

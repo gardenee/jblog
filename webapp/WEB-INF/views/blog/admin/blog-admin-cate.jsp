@@ -47,17 +47,7 @@
 		      		</thead>
 		      		<tbody id="cateList">
 		      			<!-- 리스트 영역 -->
-		      			<c:forEach items="${cList}" var="category">
-			      			<tr data-no="${category.cateNo}">
-								<td data-rn="${category.rowNum}">${category.rowNum}</td>
-								<td>${category.cateName}</td>
-								<td>${category.postNum}</td>
-								<td>${category.description}</td>
-							    <td class='text-center'>
-							    	<img class="btnCateDel" src="${pageContext.request.contextPath}/assets/images/delete.jpg" data-num="${category.cateNo}" data-post="${category.postNum}" data-name="${category.cateName}">
-							    </td>
-							</tr>
-						</c:forEach>
+		      			
 					</tbody>
 				</table>
       	
@@ -95,15 +85,62 @@
 
 <script type="text/javascript">
 
+var temp = 0;
+var count = 0;
+
+$(document).ready(function(){
+	$.ajax({	
+		url: "${pageContext.request.contextPath}/blog/${authUser.id}/admin/categoryList",
+		type : "post",
+		async: false,
+		
+		success : function(cList){
+			
+			count = cList.length;
+			temp = count;
+			
+			for (var i = 0; i < cList.length; i++) {
+				render(cList[i])
+			}			
+		},
+		error : function(XHR, status, error) {
+			console.error(status + " : " + error);
+		}
+	});	
+})
+
+
+function render(category) {	
+	$("#cateList").append(
+			"<tr data-no='" + category.cateNo + "'>"
+		+ 		"<td class='info' id='no" + temp + "'>" + temp + "</td>" 
+		+		"<td>" + category.cateName + "</td>" 
+		+ 		"<td>" + category.postNum + "</td>" 
+		+ 		"<td>" + category.description + "</td>" 
+		+ 		"<td class='text-center'>"
+		+ 			"<img class='btnCateDel' src='${pageContext.request.contextPath}/assets/images/delete.jpg' data-num='" + category.cateNo + "' data-post='" + category.postNum + "'>"
+		+ 		"</td>"
+		+	"</tr>"
+	);	
+	temp -= 1;
+}
+
 $("#cateList").on("click", ".btnCateDel", function() {
 	var no = $(this).attr("data-num");
-	var postNum = $(this).attr("data-post")
-    var cateName = $(this).attr("data-name")
+	var postNum = $(this).attr("data-post");
+    var cateName = $(this).attr("data-name");
+    var number = parseInt($(this).parent().siblings(".info").html());
     
-	if (postNum != 0 || cateName == "미분류") {
-		alert("삭제할 수 없습니다.")
+	if (postNum != 0) {
+		alert("삭제할 수 없습니다. (게시글 존재)")
 		
 		return false;
+		
+	} else if (cateName == "미분류") {
+		alert("삭제할 수 없습니다. (기본 카테고리)")
+		
+		return false;
+	
 	} else {
 		var map = {cateNo: no};
 		
@@ -115,9 +152,13 @@ $("#cateList").on("click", ".btnCateDel", function() {
 			
 			dataType: "json",
 			success : function(result){
-				if  (result) {
+				if (result) {
 					$("[data-no=" + no + "]").remove();
+				   	update(number);
+					count -= 1;
+
 					alert("삭제되었습니다.")
+					
 				} else {
 					alert("삭제를 실패했습니다.")
 				}
@@ -128,6 +169,14 @@ $("#cateList").on("click", ".btnCateDel", function() {
 		});	
 	}
 });
+
+
+function update(number) {
+	for (var i = (number + 1); i <= count; i++) {
+		$("#no" + i).text(i-1);
+		$("#no" + i).attr("id", "no" + (i-1))
+	}
+}
 
 
 $("#btnAddCate").on("click", function(){
@@ -160,7 +209,7 @@ $("#btnAddCate").on("click", function(){
 				
 				$("#cateList").prepend(
 						"<tr data-no='" + cateNo + "'>"
-					+ 		"<td>" + cateNo + "</td>" 
+					+ 		"<td class='info' id='no" + (count + 1) + "'>" + (count + 1) + "</td>" 
 					+		"<td>" + cateName + "</td>" 
 					+ 		"<td>0</td>" 
 					+ 		"<td>" + description + "</td>" 
@@ -172,6 +221,7 @@ $("#btnAddCate").on("click", function(){
 				
 				$("[name=name]").val("");
 				$("[name=desc]").val("");
+				count += 1;
 				
 				alert("추가되었습니다.");
 				

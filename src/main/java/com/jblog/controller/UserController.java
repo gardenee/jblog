@@ -38,7 +38,7 @@ public class UserController {
 		
 		String result = uService.join(user);
 		
-		if (result == "success") return "/user/joinSuccess";
+		if (result.equals("success")) return "/user/joinSuccess";
 		else return "/user/joinForm";
 	}
 	
@@ -48,9 +48,7 @@ public class UserController {
 	public boolean idCheck(@RequestBody UserVo test) {
 		System.out.println("user > idcheck");
 		
-		boolean result = uService.IDcheck(test.getId());
-		
-		return result;
+		return uService.IDcheck(test.getId());
 	}
 	
 	
@@ -58,10 +56,10 @@ public class UserController {
 	public String loginForm(@ModelAttribute PostVo post, HttpServletRequest request, Model model) {
 		System.out.println("user > loginForm");
 		
-		String referer = (String) request.getHeader("REFERER");
+		String referer = request.getHeader("REFERER");
 		int idx = referer.indexOf("jblog");
 		referer = referer.substring(idx + 5);
-		
+
 		model.addAttribute("address", referer);
 		model.addAttribute("post", post);
 		
@@ -84,6 +82,7 @@ public class UserController {
 	public String login(@ModelAttribute UserVo login, HttpSession session, @RequestParam("address") String address, @RequestParam("cateNo") int cateNo, @RequestParam("pageNo") String pageNo, Model model) {
 		System.out.println("user > login");
 		
+		System.out.println(address);
 		UserVo authUser = uService.getAuthUser(login);
 		session.setAttribute("authUser", authUser);
 		
@@ -101,9 +100,14 @@ public class UserController {
 		session.removeAttribute("authUser");
 		session.invalidate();
 		
-		String referer = (String) request.getHeader("REFERER");
+		String referer = request.getHeader("REFERER");
 		int idx = referer.indexOf("jblog");
 		referer = referer.substring(idx + 5);
+		
+		if (referer.contains("/admin/")) {
+			idx = referer.indexOf("/admin/");
+			referer = referer.substring(0, idx+1);
+		}
 		
 		return "redirect:" + referer;
 	}

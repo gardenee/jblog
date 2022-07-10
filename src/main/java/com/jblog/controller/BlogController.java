@@ -2,6 +2,7 @@ package com.jblog.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +52,7 @@ public class BlogController {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
 		if (authUser == null || !authUser.getId().equals(id)) {
+			model.addAttribute("id", id);
 			
 			return "/error/403";
 		}
@@ -80,7 +82,8 @@ public class BlogController {
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		if (authUser == null || !authUser.getId().equals(id)) {
-			
+			model.addAttribute("id", id);
+
 			return "/error/403";
 		}
 		
@@ -88,6 +91,17 @@ public class BlogController {
 		model.addAllAttributes(map);
 		
 		return "/blog/admin/blog-admin-cate";
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/{id}/admin/categoryList")
+	public List<CategoryVo> categoryList(@PathVariable("id") String id) {
+		System.out.println("blog > admin > categoryList");
+		
+		List<CategoryVo> cList = bService.getCategory(id);
+		
+		return cList; 
 	}
 	
 	
@@ -120,7 +134,8 @@ public class BlogController {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
 		if (authUser == null || !authUser.getId().equals(id)) {
-			
+			model.addAttribute("id", id);
+ 
 			return "/error/403";
 		}
 		
