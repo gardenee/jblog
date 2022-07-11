@@ -19,9 +19,9 @@
 
 		<div id="content">
 			<ul id="admin-menu" class="clearfix">
-				<li class="tabbtn"><a href="${pageContext.request.contextPath}/blog/${bVo.id}/admin/basic">기본설정</a></li>
-				<li class="tabbtn selected"><a href="${pageContext.request.contextPath}/blog/${bVo.id}/admin/category">카테고리</a></li>
-				<li class="tabbtn"><a href="${pageContext.request.contextPath}/blog/${bVo.id}/admin/writeForm">글작성</a></li>
+				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${bVo.id}/admin/basic">기본설정</a></li>
+				<li class="tabbtn selected"><a href="${pageContext.request.contextPath}/${bVo.id}/admin/category">카테고리</a></li>
+				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${bVo.id}/admin/writeForm">글작성</a></li>
 			</ul>
 			<!-- //admin-menu -->
 			
@@ -89,7 +89,7 @@ var count = 0; //전체 카테고리 수
 
 $(document).ready(function(){
 	$.ajax({	//카테고리 테이블 불러오기
-		url: "${pageContext.request.contextPath}/blog/${authUser.id}/admin/categoryList",
+		url: "${pageContext.request.contextPath}/${authUser.id}/admin/categoryList",
 		type : "post",
 		async: false,
 		
@@ -144,7 +144,7 @@ $("#cateList").on("click", ".btnCateDel", function() { // 삭제 버튼 클릭
 		var map = {cateNo: no};
 		
 		$.ajax({	
-			url: "${pageContext.request.contextPath}/blog/${authUser.id}/admin/deleteCategory", // db에서 제거
+			url: "${pageContext.request.contextPath}/${authUser.id}/admin/deleteCategory", // db에서 제거
 			type : "post",
 			contentType : "application/json",
 			data : JSON.stringify(map),
@@ -195,7 +195,7 @@ $("#btnAddCate").on("click", function(){ // 카테고리 추가
 	};
 	
 	$.ajax({	
-		url: "${pageContext.request.contextPath}/blog/${authUser.id}/admin/addCategory", // 카테고리 추가
+		url: "${pageContext.request.contextPath}/${authUser.id}/admin/addCategory", // 카테고리 추가
 		type : "post",
 		contentType : "application/json",
 		data : JSON.stringify(map),

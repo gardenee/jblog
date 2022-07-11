@@ -13,6 +13,6 @@
 	<c:if test="${!empty(authUser)}">
 		<!-- 로그인 후 메뉴 -->
 		<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
-		<li><a href="${pageContext.request.contextPath}/blog/${authUser.id}" target="_blank">내블로그</a></li>
+		<li><a href="${pageContext.request.contextPath}/${authUser.id}" target="_blank">내블로그</a></li>
 	</c:if>
 </ul>

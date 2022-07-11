@@ -1,5 +1,7 @@
 package com.jblog.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class BlogVo {
 
 	private String id;
@@ -7,6 +9,7 @@ public class BlogVo {
 	private String blogTitle;
 	private String logoFile;
 	private String regDate;
+	private MultipartFile file;
 	
 	public BlogVo() {
 		
@@ -56,6 +59,14 @@ public class BlogVo {
 
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
+	}
+	
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
 	}
 
 	@Override

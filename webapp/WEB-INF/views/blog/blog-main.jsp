@@ -32,7 +32,7 @@
 						<strong>카테고리</strong>
 					</div>
 		
-					<form id="cateForm" action="${pageContext.request.contextPath}/blog/${bVo.id}" method="POST">
+					<form id="cateForm" action="${pageContext.request.contextPath}/${bVo.id}" method="POST">
 						<input id="cateNo" type="hidden" name="cateNo" value="">
 					</form>
 					
@@ -132,7 +132,7 @@
 					
 					<!-- 페이징 -->
 					<div id="paging">
-						<form id="pageForm" action="${pageContext.request.contextPath}/blog/${bVo.id}/${post.postNo}" method="POST">
+						<form id="pageForm" action="${pageContext.request.contextPath}/${bVo.id}/${post.postNo}" method="POST">
 							<input id="page-cateNo" type="hidden" name="cateNo" value="${post.cateNo}">
 							<input id="page-pageNo" type="hidden" name="pageNo" value="">
 						</form>
@@ -312,7 +312,7 @@ $(".cate-a").on("click", function(){ // 카테고리 칸에서 카테고리 선�
 
 $(".post-a").on("click", function(){ // 게시글 리스트에서 게시글 선택
 	var postNo = $(this).attr("data-postNo");
-	$("#postForm").attr("action", "${pageContext.request.contextPath}/blog/${bVo.id}/" + postNo);
+	$("#postForm").attr("action", "${pageContext.request.contextPath}/${bVo.id}/" + postNo);
 	
 	$("#postForm").submit();
 });

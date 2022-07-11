@@ -1,6 +1,7 @@
 package com.jblog.service;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -109,6 +110,35 @@ public class BlogService {
 
 		return map;
 	}
+	
+	
+	public String viewImg(MultipartFile file) {
+		String path = null;
+		
+		if (!file.isEmpty()) {
+			String orgName = file.getOriginalFilename();
+			String exName = orgName.substring(orgName.lastIndexOf("."));
+			String saveName = System.currentTimeMillis() + UUID.randomUUID().toString() + exName;
+			
+			String saveDir = "C:\\javastudy\\temp";
+			String filePath = saveDir + "\\" + saveName;
+			path = "/temp/" + saveName;
+			
+			try {
+				byte[] fileData = file.getBytes();
+				BufferedOutputStream bs = new BufferedOutputStream(new FileOutputStream(filePath));
+				
+				bs.write(fileData);
+				System.out.println("[저장완료]");
+				bs.close();
+				
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		} 
+		
+		return path;
+	}
 
 	
 	public void blogBasicUpdate(BlogVo bVo, MultipartFile file, String title) { // 블로그 기본 업데이트
@@ -140,6 +170,10 @@ public class BlogService {
 		
 		if (count > 0) System.out.println("[업데이트가 완료되었습니다.]");
 		else System.out.println("[업데이트가 실패했습니다.]");
+		
+		File rootDir = new File("C:/javaStudy/temp/"); // 미리보기 사진들 삭제
+		File[] fileList = rootDir.listFiles();
+		for (File delFile: fileList) delFile.delete();
 	}
 	
 	

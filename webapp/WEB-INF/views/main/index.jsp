@@ -42,7 +42,7 @@
 						<table border="1">
 							<tr>
 								<td><img src="${pageContext.request.contextPath}${blog.logoFile}"></td>
-								<td><a href="${pageContext.request.contextPath}/blog/${blog.id}" target="_blank">${blog.blogTitle}</a></td>
+								<td><a href="${pageContext.request.contextPath}/${blog.id}" target="_blank">${blog.blogTitle}</a></td>
 								<td>${blog.name}(${blog.id})</td>
 								<td>
 									<c:if test="${blog.regDate == '01/01/01'}">

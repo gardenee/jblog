@@ -16,7 +16,7 @@
 		<c:import url="/WEB-INF/views/includes/main-header.jsp"></c:import>
 		
 		<h1>존재하지 않는 게시글입니다.</h1>
-		<a href="${pageContext.request.contextPath}/blog/${bVo.id}">메인으로 돌아가기</a>
+		<a href="${pageContext.request.contextPath}/${bVo.id}">메인으로 돌아가기</a>
 	</div>
 
 </body>
